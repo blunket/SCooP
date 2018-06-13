@@ -1,0 +1,12 @@
+.pure-button-darkgray {
+    background-color: #d3d3d3;
+}
+.button-warning {
+    background: #d3d3d3;
+}
+.button-warning:hover {
+    color: white;
+    cursor: warning;
+    background-color: #d44;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}

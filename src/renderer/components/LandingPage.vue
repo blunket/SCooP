@@ -1,0 +1,200 @@
+<template>
+  <div id="wrapper">
+    <header>
+      <h1 class="title">My Sites - SCooP</h1>
+    </header>
+    <main>
+      <div id="sites-list">
+        <sites-list :sites="sites" :sel="sel" @selectSite="selectSite" @deleteSite="deleteSite"></sites-list>
+      </div>
+      <div id="connection-info">
+        <site-info-form :selectedSite="selectedSite" :sel="sel" @saveSite="saveSite" @deleteSite="deleteSite"></site-info-form>
+      </div>
+    </main>
+    <footer>
+      <button class="pure-button pure-button-primary landing-btn"
+        @click="sel = null"
+        v-bind:class="{ 'selected': sel == null }">
+        <i class="far fa-plus-square"></i>
+        New Site
+      </button>
+      <button class="pure-button landing-btn" @click="loadSites()">
+        <i class="fas fa-sync-alt"></i>
+        Refresh Site List
+      </button>
+    </footer>
+  </div>
+</template>
+
+<script>
+  import SitesList from './LandingPage/SitesList.vue'
+  import SiteInfoForm from './LandingPage/SiteInfoForm.vue'
+  import Vue from 'vue'
+
+  const remote = require('electron').remote
+
+  export default {
+    name: 'landing-page',
+    data: function () {
+      return {
+        sel: null,
+        sites: {}
+      }
+    },
+    computed: {
+      selectedSite: function () {
+        var defaultSite = {
+          siteName: 'New Site',
+          host: '',
+          protocol: 'ftpe',
+          port: 21,
+          username: '',
+          password: ''
+        }
+        if (this.sel == null) {
+          return defaultSite
+        }
+        var ss = this.sites[this.sel]
+        // fill in the defaults wherever the data might be corrupted for some reason
+        Object.keys(defaultSite).forEach(function (key, i) {
+          if (typeof ss[key] === 'undefined') {
+            ss[key] = defaultSite[key]
+          }
+        })
+        return ss
+      }
+    },
+    methods: {
+      selectSite: function (ind) {
+        this.sel = ind
+      },
+      loadSites: function () {
+        var v = this
+        return new Promise(async function (resolve, reject) {
+          v.sites = await remote.getGlobal('settings').getSitesConfig()
+          resolve()
+        })
+      },
+      saveSite: async function (siteData) {
+        var v = this
+        if (v.sel == null) {
+          var uuid = remote.getGlobal('settings').addSite(v.sites, siteData)
+          v.loadSites().then(function () {
+            v.sel = uuid
+          })
+        } else {
+          remote.getGlobal('settings').updateSite(v.sites, v.sel, siteData)
+          v.loadSites()
+        }
+      },
+      deleteSite: function (sel) {
+        var v = this
+        var sure = confirm('Really delete site "' + v.sites[sel].siteName + '"?')
+        if (sure) {
+          if (v.sel === sel) {
+            v.sel = null
+          }
+          Vue.nextTick(function () {
+            remote.getGlobal('settings').deleteSite(v.sites, sel).then(function () {
+              v.loadSites()
+            })
+          })
+        }
+      }
+    },
+    components: {
+      SitesList,
+      SiteInfoForm
+    },
+    mounted: function () {
+      this.loadSites()
+    }
+  }
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+
+  header, footer {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+  }
+  footer { padding-left: 0px; }
+
+  main {
+    outline: 1px solid #888;
+  }
+  main::before,
+  main::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  p {
+    margin-bottom: 6px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #43f;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    background-color: #fff;
+    padding: 0px;
+    margin: 0px !important;
+  }
+
+  .title {
+    color: #246;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .border {
+    border: 1px solid #888;
+  }
+
+  #connection-info {
+    box-shadow: 0px 0px 4px #888 inset;
+    border-left: 1px solid #888;
+    background-color: #f0f0f0;
+    padding: 6px;
+    height: calc(100vh - 100px);
+    width: 70%;
+    float: left;
+    overflow: auto;
+  }
+
+  .landing-btn {
+    margin: 6px !important;
+    margin-right: 0px !important;
+  }
+
+  #sites-list {
+    background-color: #f0f0f0;
+    padding: 6px;
+    font-size: 16px;
+    height: calc(100vh - 100px);
+    width: 30%;
+    float: left;
+    overflow: auto;
+  }
+
+</style>
