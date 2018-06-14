@@ -1,42 +1,51 @@
 <template>
   <div id="wrapper">
     <main>
-      <div class="left-side">
-        <span class="title">
-          Welcome to your new project!
-        </span>
-        <system-information></system-information>
+      <div class="title">My Sites - SCooP</div>
+      <div id="sites-list">
+        <ul v-if="sites.length > 0">
+          <li
+            v-bind:class="{ 'selected': (i == sel) }"
+            @click="selectSite(i)"
+            v-for="(site, i) in sites">
+            {{ site.siteName }}
+          </li>
+        </ul>
       </div>
-
-      <div class="right-side">
-        <div class="doc">
-          <div class="title">Getting Started</div>
-          <p>
-            electron-vue comes packed with detailed documentation that covers everything from
-            internal configurations, using the project structure, building your application,
-            and so much more.
-          </p>
-          <button @click="open('https://simulatedgreg.gitbooks.io/electron-vue/content/')">Read the Docs</button><br><br>
-        </div>
-        <div class="doc">
-          <div class="title alt">Other Documentation</div>
-          <button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
-          <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
-        </div>
+      <div id="connection-info">
+        <div v-if="sel == null" class="title">Add New Site</div>
+        <div v-else class="title">{{ selectedSite.siteName }}</div>
       </div>
     </main>
   </div>
 </template>
 
 <script>
-  import SystemInformation from './LandingPage/SystemInformation'
-
   export default {
     name: 'landing-page',
-    components: { SystemInformation },
+    data: function () {
+      return {
+        sel: null,
+        sites: [
+          { siteName: 'site 1' },
+          { siteName: 'second site' },
+          { siteName: 'andrewsiegman.com' },
+          { siteName: 'nextwavesolutions.io' },
+          { siteName: 'my fave site ever' }
+        ]
+      }
+    },
+    computed: {
+      selectedSite: function () {
+        if (this.sel == null) {
+          return {}
+        }
+        return this.sites[this.sel]
+      }
+    },
     methods: {
-      open (link) {
-        this.$electron.shell.openExternal(link)
+      selectSite: function (ind) {
+        this.sel = ind
       }
     }
   }
@@ -51,77 +60,69 @@
     padding: 0;
   }
 
-  body { font-family: 'Source Sans Pro', sans-serif; }
-
-  #wrapper {
-    background:
-      radial-gradient(
-        ellipse at top left,
-        rgba(255, 255, 255, 1) 40%,
-        rgba(229, 229, 229, .9) 100%
-      );
-    height: 100vh;
-    padding: 60px 80px;
-    width: 100vw;
-  }
-
-  #logo {
-    height: auto;
-    margin-bottom: 20px;
-    width: 420px;
+  body {
+    font-family: 'Source Sans Pro', sans-serif;
   }
 
   main {
-    display: flex;
-    justify-content: space-between;
+    width: 700px;
   }
 
-  main > div { flex-basis: 50%; }
-
-  .left-side {
-    display: flex;
-    flex-direction: column;
+  p {
+    margin-bottom: 6px;
   }
 
-  .welcome {
-    color: #555;
-    font-size: 23px;
-    margin-bottom: 10px;
+  a {
+    text-decoration: none;
+    color: #43f;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  #wrapper {
+    height: 100vh;
+    padding: 30px 40px;
+    width: 100vw;
   }
 
   .title {
-    color: #2c3e50;
+    color: #246;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 6px;
   }
 
-  .title.alt {
-    font-size: 18px;
-    margin-bottom: 10px;
+  #sites-list {
+    border-top: 1px solid #888;
+    background-color: #eee;
+    padding: 6px;
+    font-size: 14px;
+    height: 400px;
+    width: 30%;
+    overflow: auto;
+    float: left;
   }
 
-  .doc p {
-    color: black;
-    margin-bottom: 10px;
+  #sites-list ul {
+    list-style: none;
   }
-
-  .doc button {
-    font-size: .8em;
+  #sites-list ul li {
     cursor: pointer;
-    outline: none;
-    padding: 0.75em 2em;
-    border-radius: 2em;
-    display: inline-block;
-    color: #fff;
-    background-color: #4fc08d;
-    transition: all 0.15s ease;
-    box-sizing: border-box;
-    border: 1px solid #4fc08d;
+    padding: 3px;
+  }
+  #sites-list ul li:hover { background-color: #ccc; }
+  #sites-list ul li.selected { background-color: #aae; }
+  #sites-list ul li.selected:hover { background-color: #99e; }
+
+  #connection-info {
+    border-top: 1px solid #888;
+    background-color: #ddd;
+    padding: 6px;
+    height: 400px;
+    width: 70%;
+    float: left;
   }
 
-  .doc button.alt {
-    color: #42b983;
-    background-color: transparent;
-  }
 </style>
