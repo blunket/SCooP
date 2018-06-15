@@ -24,6 +24,8 @@ function createWindow () {
     minHeight: 500
   })
 
+  mainWindow.setMenu(null)
+
   mainWindow.loadURL(winURL)
 
   mainWindow.on('closed', () => {

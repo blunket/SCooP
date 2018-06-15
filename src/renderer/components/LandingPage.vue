@@ -1,26 +1,26 @@
 <template>
   <div id="wrapper">
+    <h1 class="title">My Sites - SCooP</h1>
     <main>
-      <div class="title">My Sites - SCooP</div>
-      <div id="sites-list">
-        <ul v-if="sites.length > 0">
-          <li
-            v-bind:class="{ 'selected': (i == sel) }"
-            @click="selectSite(i)"
-            v-for="(site, i) in sites">
-            {{ site.siteName }}
-          </li>
-        </ul>
-      </div>
+      <sites-list :sites="sites" :sel="sel" @selectSite="selectSite"></sites-list>
       <div id="connection-info">
         <div v-if="sel == null" class="title">Add New Site</div>
         <div v-else class="title">{{ selectedSite.siteName }}</div>
       </div>
     </main>
+    <ui-button
+      v-bind:class="{ 'selected': sel == null }"
+      @click="sel = null"
+      icon="far fa-plus-square">
+      New Site
+    </ui-button>
   </div>
 </template>
 
 <script>
+  import SitesList from './LandingPage/SitesList.vue'
+  import UiButton from './UI/Button.vue'
+
   export default {
     name: 'landing-page',
     data: function () {
@@ -31,6 +31,21 @@
           { siteName: 'second site' },
           { siteName: 'andrewsiegman.com' },
           { siteName: 'nextwavesolutions.io' },
+          { siteName: 'asdf' },
+          { siteName: 'Lorem ipsum dolor' },
+          { siteName: 'sit amet consectetur' },
+          { siteName: 'adipisicing elit' },
+          { siteName: 'Facere corrupti' },
+          { siteName: 'eligendi nesciunt' },
+          { siteName: 'sed quas adipisci' },
+          { siteName: 'non iste alias' },
+          { siteName: 'temporibus' },
+          { siteName: 'ea veritatis' },
+          { siteName: 'velit error eius' },
+          { siteName: 'non iste alias' },
+          { siteName: 'temporibus' },
+          { siteName: 'ea veritatis' },
+          { siteName: 'velit error eius' },
           { siteName: 'my fave site ever' }
         ]
       }
@@ -47,6 +62,10 @@
       selectSite: function (ind) {
         this.sel = ind
       }
+    },
+    components: {
+      SitesList,
+      UiButton
     }
   }
 </script>
@@ -65,7 +84,14 @@
   }
 
   main {
-    width: 700px;
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #888;
+  }
+  main::before,
+  main::after {
+    content: "";
+    display: table;
+    clear: both;
   }
 
   p {
@@ -81,9 +107,13 @@
     text-decoration: underline;
   }
 
+  h1 {
+    padding: 20px;
+    margin-bottom: 0px !important;
+  }
+
   #wrapper {
     height: 100vh;
-    padding: 30px 40px;
     width: 100vw;
   }
 
@@ -94,30 +124,7 @@
     margin-bottom: 6px;
   }
 
-  #sites-list {
-    border-top: 1px solid #888;
-    background-color: #eee;
-    padding: 6px;
-    font-size: 14px;
-    height: 400px;
-    width: 30%;
-    overflow: auto;
-    float: left;
-  }
-
-  #sites-list ul {
-    list-style: none;
-  }
-  #sites-list ul li {
-    cursor: pointer;
-    padding: 3px;
-  }
-  #sites-list ul li:hover { background-color: #ccc; }
-  #sites-list ul li.selected { background-color: #aae; }
-  #sites-list ul li.selected:hover { background-color: #99e; }
-
   #connection-info {
-    border-top: 1px solid #888;
     background-color: #ddd;
     padding: 6px;
     height: 400px;
