@@ -28,17 +28,19 @@
 
 <style>
   #sites-list {
-    background-color: #eee;
+    background-color: #f0f0f0;
     padding: 6px;
     font-size: 16px;
     height: 400px;
     width: 30%;
-    overflow: auto;
     float: left;
+    overflow: auto;
   }
 
   #sites-list ul {
     list-style: none;
+    margin: 0px;
+    padding: 0px;
   }
   #sites-list ul li {
     cursor: pointer;

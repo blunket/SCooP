@@ -9,19 +9,17 @@
         <site-info-form></site-info-form>
       </div>
     </main>
-    <ui-button
-      class="pure-button-primary landing-btn"
-      v-bind:class="{ 'selected': sel == null }"
+    <button class="pure-button pure-button-primary landing-btn"
       @click="sel = null"
-      icon="far fa-plus-square">
+      v-bind:class="{ 'selected': sel == null }">
+      <i class="far fa-plus-square"></i>
       New Site
-    </ui-button>
+    </button>
   </div>
 </template>
 
 <script>
   import SitesList from './LandingPage/SitesList.vue'
-  import UiButton from './UI/Button.vue'
   import SiteInfoForm from './LandingPage/SiteInfoForm.vue'
 
   export default {
@@ -68,7 +66,6 @@
     },
     components: {
       SitesList,
-      UiButton,
       SiteInfoForm
     }
   }
@@ -79,8 +76,6 @@
 
   * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
   }
 
   body {
@@ -112,6 +107,7 @@
   }
 
   h1 {
+    background-color: #fff;
     padding: 20px;
     margin: 0px !important;
   }
@@ -123,8 +119,14 @@
     margin-bottom: 6px;
   }
 
+  .border {
+    border: 1px solid #888;
+  }
+
   #connection-info {
-    background-color: #ddd;
+    box-shadow: 0px 0px 4px #888 inset;
+    border-left: 1px solid #888;
+    background-color: #f0f0f0;
     padding: 6px;
     height: 400px;
     width: 70%;
