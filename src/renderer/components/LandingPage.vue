@@ -6,9 +6,11 @@
       <div id="connection-info">
         <div v-if="sel == null" class="title">Add New Site</div>
         <div v-else class="title">{{ selectedSite.siteName }}</div>
+        <site-info-form></site-info-form>
       </div>
     </main>
     <ui-button
+      class="pure-button-primary landing-btn"
       v-bind:class="{ 'selected': sel == null }"
       @click="sel = null"
       icon="far fa-plus-square">
@@ -20,6 +22,7 @@
 <script>
   import SitesList from './LandingPage/SitesList.vue'
   import UiButton from './UI/Button.vue'
+  import SiteInfoForm from './LandingPage/SiteInfoForm.vue'
 
   export default {
     name: 'landing-page',
@@ -65,7 +68,8 @@
     },
     components: {
       SitesList,
-      UiButton
+      UiButton,
+      SiteInfoForm
     }
   }
 </script>
@@ -109,12 +113,7 @@
 
   h1 {
     padding: 20px;
-    margin-bottom: 0px !important;
-  }
-
-  #wrapper {
-    height: 100vh;
-    width: 100vw;
+    margin: 0px !important;
   }
 
   .title {
@@ -130,6 +129,12 @@
     height: 400px;
     width: 70%;
     float: left;
+    overflow: auto;
+  }
+
+  .landing-btn {
+    margin: 6px !important;
+    margin-right: 0px !important;
   }
 
 </style>
