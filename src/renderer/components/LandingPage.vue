@@ -1,6 +1,8 @@
 <template>
   <div id="wrapper">
-    <h1 class="title">My Sites - SCooP</h1>
+    <header>
+      <h1 class="title">My Sites - SCooP</h1>
+    </header>
     <main>
       <sites-list :sites="sites" :sel="sel" @selectSite="selectSite"></sites-list>
       <div id="connection-info">
@@ -9,12 +11,14 @@
         <site-info-form></site-info-form>
       </div>
     </main>
-    <button class="pure-button pure-button-primary landing-btn"
-      @click="sel = null"
-      v-bind:class="{ 'selected': sel == null }">
-      <i class="far fa-plus-square"></i>
-      New Site
-    </button>
+    <footer>
+      <button class="pure-button pure-button-primary landing-btn"
+        @click="sel = null"
+        v-bind:class="{ 'selected': sel == null }">
+        <i class="far fa-plus-square"></i>
+        New Site
+      </button>
+    </footer>
   </div>
 </template>
 
@@ -82,9 +86,16 @@
     font-family: 'Source Sans Pro', sans-serif;
   }
 
+  header, footer {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+  }
+  footer { padding-left: 0px; }
+
   main {
-    border-top: 1px solid #888;
-    border-bottom: 1px solid #888;
+    outline: 1px solid #888;
   }
   main::before,
   main::after {
@@ -108,7 +119,7 @@
 
   h1 {
     background-color: #fff;
-    padding: 20px;
+    padding: 0px;
     margin: 0px !important;
   }
 
@@ -128,7 +139,7 @@
     border-left: 1px solid #888;
     background-color: #f0f0f0;
     padding: 6px;
-    height: 400px;
+    height: calc(100vh - 100px);
     width: 70%;
     float: left;
     overflow: auto;

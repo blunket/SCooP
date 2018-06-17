@@ -31,7 +31,7 @@
     background-color: #f0f0f0;
     padding: 6px;
     font-size: 16px;
-    height: 400px;
+    height: calc(100vh - 100px);
     width: 30%;
     float: left;
     overflow: auto;
@@ -47,6 +47,11 @@
     padding: 3px;
   }
   #sites-list ul li:hover { background-color: #ccc; }
-  #sites-list ul li.selected { background-color: #aae; }
-  #sites-list ul li.selected:hover { background-color: #99e; }
+  #sites-list ul li.selected {
+    background-color: #0078e7;
+    color: #fff;
+  }
+  #sites-list ul li.selected:hover {
+    filter: brightness(0.9);
+  }
 </style>
