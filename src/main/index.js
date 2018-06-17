@@ -1,6 +1,22 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, remote, BrowserWindow } from 'electron'
+const path = require('path')
+const fs = require('fs')
+
+global.settings = {
+  getSitesConfig: function () {
+    const userDataPath = (app || remote.app).getPath('userData')
+    const dpath = path.join(userDataPath, 'site-data.json')
+    var sites = []
+    try {
+      sites = JSON.parse(fs.readFileSync(dpath))
+    } catch (error) {
+      fs.writeFileSync(dpath, '[]')
+    }
+    return sites
+  }
+}
 
 /**
  * Set `__static` path to static files in production

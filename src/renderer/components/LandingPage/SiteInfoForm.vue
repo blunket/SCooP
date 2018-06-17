@@ -72,6 +72,9 @@
             break
         }
       }
+    },
+    props: {
+      sel: Number
     }
   }
 </script>

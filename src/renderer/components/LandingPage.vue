@@ -8,7 +8,7 @@
       <div id="connection-info">
         <div v-if="sel == null" class="title">Add New Site</div>
         <div v-else class="title">{{ selectedSite.siteName }}</div>
-        <site-info-form></site-info-form>
+        <site-info-form :sel="sel"></site-info-form>
       </div>
     </main>
     <footer>
@@ -18,6 +18,10 @@
         <i class="far fa-plus-square"></i>
         New Site
       </button>
+      <button class="pure-button landing-btn" @click="loadSites()">
+        <i class="fas fa-sync-alt"></i>
+        Refresh Site List
+      </button>
     </footer>
   </div>
 </template>
@@ -26,33 +30,14 @@
   import SitesList from './LandingPage/SitesList.vue'
   import SiteInfoForm from './LandingPage/SiteInfoForm.vue'
 
+  const remote = require('electron').remote
+
   export default {
     name: 'landing-page',
     data: function () {
       return {
         sel: null,
-        sites: [
-          { siteName: 'site 1' },
-          { siteName: 'second site' },
-          { siteName: 'andrewsiegman.com' },
-          { siteName: 'nextwavesolutions.io' },
-          { siteName: 'asdf' },
-          { siteName: 'Lorem ipsum dolor' },
-          { siteName: 'sit amet consectetur' },
-          { siteName: 'adipisicing elit' },
-          { siteName: 'Facere corrupti' },
-          { siteName: 'eligendi nesciunt' },
-          { siteName: 'sed quas adipisci' },
-          { siteName: 'non iste alias' },
-          { siteName: 'temporibus' },
-          { siteName: 'ea veritatis' },
-          { siteName: 'velit error eius' },
-          { siteName: 'non iste alias' },
-          { siteName: 'temporibus' },
-          { siteName: 'ea veritatis' },
-          { siteName: 'velit error eius' },
-          { siteName: 'my fave site ever' }
-        ]
+        sites: []
       }
     },
     computed: {
@@ -66,11 +51,17 @@
     methods: {
       selectSite: function (ind) {
         this.sel = ind
+      },
+      loadSites: function () {
+        this.sites = remote.getGlobal('settings').getSitesConfig()
       }
     },
     components: {
       SitesList,
       SiteInfoForm
+    },
+    mounted: function () {
+      this.loadSites()
     }
   }
 </script>
