@@ -35,9 +35,25 @@
           <input id="password" v-model="password" type="password" class="pure-u-23-24" placeholder="Password">
         </div>
       </div>
-
-      <button type="submit" class="pure-button pure-button-primary connect-btn save-btn">Save & Connect</button>
-      <button type="submit" class="pure-button pure-button-secondary connect-btn">Connect</button>
+      <div class="form-btns">
+        <button type="submit" class="pure-button pure-button-primary">
+          <i class="fas fa-plug"></i>
+          <template v-if="sel == null">
+          Save & Connect
+          </template>
+          <template v-else>
+            Connect
+          </template>
+        </button>
+        <button type="submit" class="pure-button pure-button-darkgray">
+          <i class="fas fa-save"></i>
+          Save
+        </button>
+        <button v-if="sel != null" type="submit" class="pure-button button-warning">
+          <i class="far fa-trash-alt"></i>
+          Delete
+        </button>
+      </div>
     </fieldset>
 
   </form>
@@ -80,10 +96,10 @@
 </script>
 
 <style>
-  .connect-btn {
-    border: 1px solid #aaa;
+  .form-btns {
     margin-top: 5px;
+  }
+  .form-btns button {
     margin-right: 5px;
   }
-  .save-btn { border: 1px solid #0078e7; }
 </style>
