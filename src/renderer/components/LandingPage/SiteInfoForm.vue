@@ -1,6 +1,7 @@
 <template>
   <form action="" @submit.prevent="addEditSite()" class="pure-form pure-form-stacked">
     <input type="hidden" name="siteId" v-model="sel">
+    <input type="text" id="siteName" class="title" v-model="siteName">
     <legend>Session Details</legend>
     <fieldset>
       <div class="pure-g">
@@ -27,7 +28,7 @@
 
         <div class="pure-u-1-3">
           <label for="name">Username</label>
-          <input id="name" v-model="name" type="text" class="pure-u-23-24" placeholder="Username">
+          <input id="name" v-model="username" type="text" class="pure-u-23-24" placeholder="Username">
         </div>
 
         <div class="pure-u-1-3">
@@ -64,10 +65,11 @@
     name: 'site-info-form',
     data: function () {
       return {
+        siteName: 'New Site',
         host: '',
         protocol: 'ftpe',
         port: 21,
-        name: '',
+        username: '',
         password: ''
       }
     },
@@ -87,18 +89,51 @@
             this.port = 21
             break
         }
+      },
+      resetForm: function () {
+        this.siteName = 'New Site'
+        this.host = ''
+        this.protocol = 'ftpe'
+        this.port = 21
+        this.username = ''
+        this.password = ''
+      }
+    },
+    mounted: function () {
+      this.resetForm()
+      document.getElementById('siteName').focus()
+    },
+    watch: {
+      sel: function (newVal, oldVal) {
+        if (oldVal !== newVal) {
+          if (newVal == null) {
+            this.resetForm()
+            document.getElementById('siteName').focus()
+          } else {
+            this.siteName = this.selectedSite.siteName
+          }
+        }
       }
     },
     props: {
-      sel: Number
+      sel: Number,
+      selectedSite: Object
     }
   }
 </script>
 
-<style>
+<style scoped>
+  input.title:not(:focus) {
+    background-color: transparent;
+    padding: 0px;
+    border: 0px;
+    box-shadow: none;
+  }
+
   .form-btns {
     margin-top: 5px;
   }
+
   .form-btns button {
     margin-right: 5px;
   }

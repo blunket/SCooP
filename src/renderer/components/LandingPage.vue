@@ -4,11 +4,11 @@
       <h1 class="title">My Sites - SCooP</h1>
     </header>
     <main>
-      <sites-list :sites="sites" :sel="sel" @selectSite="selectSite"></sites-list>
+      <div id="sites-list">
+        <sites-list :sites="sites" :sel="sel" @selectSite="selectSite"></sites-list>
+      </div>
       <div id="connection-info">
-        <div v-if="sel == null" class="title">Add New Site</div>
-        <div v-else class="title">{{ selectedSite.siteName }}</div>
-        <site-info-form :sel="sel"></site-info-form>
+        <site-info-form :selectedSite="selectedSite" :sel="sel"></site-info-form>
       </div>
     </main>
     <footer>
@@ -139,6 +139,16 @@
   .landing-btn {
     margin: 6px !important;
     margin-right: 0px !important;
+  }
+
+  #sites-list {
+    background-color: #f0f0f0;
+    padding: 6px;
+    font-size: 16px;
+    height: calc(100vh - 100px);
+    width: 30%;
+    float: left;
+    overflow: auto;
   }
 
 </style>
