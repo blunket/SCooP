@@ -4,10 +4,11 @@ import { app, remote, BrowserWindow } from 'electron'
 const path = require('path')
 const fs = require('fs')
 
+const userDataPath = (app || remote.app).getPath('userData')
+const dpath = path.join(userDataPath, 'site-data.json')
+
 global.settings = {
   getSitesConfig: function () {
-    const userDataPath = (app || remote.app).getPath('userData')
-    const dpath = path.join(userDataPath, 'site-data.json')
     var sites = []
     try {
       sites = JSON.parse(fs.readFileSync(dpath))
@@ -15,6 +16,19 @@ global.settings = {
       fs.writeFileSync(dpath, '[]')
     }
     return sites
+  },
+  addSite: function (siteData) {
+    var sites = this.getSitesConfig()
+    sites.push(siteData)
+    this.writeSitesConfig(sites)
+  },
+  writeSitesConfig: function (sitesData) {
+    return fs.writeFileSync(dpath, JSON.stringify(sitesData))
+  },
+  deleteSite: function (siteId) {
+    var sites = this.getSitesConfig()
+    sites.splice(siteId, 1)
+    this.writeSitesConfig(sites)
   }
 }
 

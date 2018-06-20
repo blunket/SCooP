@@ -8,7 +8,7 @@
         <sites-list :sites="sites" :sel="sel" @selectSite="selectSite"></sites-list>
       </div>
       <div id="connection-info">
-        <site-info-form :selectedSite="selectedSite" :sel="sel"></site-info-form>
+        <site-info-form :selectedSite="selectedSite" :sel="sel" @saveSite="saveSite" @deleteSite="deleteSite"></site-info-form>
       </div>
     </main>
     <footer>
@@ -54,6 +54,20 @@
       },
       loadSites: function () {
         this.sites = remote.getGlobal('settings').getSitesConfig()
+      },
+      saveSite: function (siteData) {
+        if (this.sel == null) {
+          remote.getGlobal('settings').addSite(siteData)
+          this.loadSites()
+          this.sel = this.sites.length - 1
+        } else {
+          this.loadSites()
+        }
+      },
+      deleteSite: function (sel) {
+        remote.getGlobal('settings').deleteSite(sel)
+        this.sel = null
+        this.loadSites()
       }
     },
     components: {

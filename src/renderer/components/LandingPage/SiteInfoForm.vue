@@ -37,20 +37,15 @@
         </div>
       </div>
       <div class="form-btns">
-        <button type="submit" class="pure-button pure-button-primary">
+        <button @click.prevent="saveAndConnect()" class="pure-button pure-button-primary">
           <i class="fas fa-plug"></i>
-          <template v-if="sel == null">
           Save & Connect
-          </template>
-          <template v-else>
-            Connect
-          </template>
         </button>
-        <button type="submit" class="pure-button pure-button-darkgray">
+        <button @click.prevent="saveSite()" class="pure-button pure-button-darkgray">
           <i class="fas fa-save"></i>
           Save
         </button>
-        <button v-if="sel != null" type="submit" class="pure-button button-warning">
+        <button @click.prevent="deleteSite()" v-if="sel != null" class="pure-button button-warning">
           <i class="far fa-trash-alt"></i>
           Delete
         </button>
@@ -74,6 +69,23 @@
       }
     },
     methods: {
+      saveAndConnect: function () {
+        this.saveSite()
+      },
+      saveSite: function () {
+        var siteData = {
+          siteName: this.siteName,
+          host: this.host,
+          protocol: this.protocol,
+          port: this.port,
+          username: this.username,
+          password: this.password
+        }
+        this.$emit('saveSite', siteData)
+      },
+      deleteSite: function () {
+        this.$emit('deleteSite', this.sel)
+      },
       suggestPort: function () {
         switch (this.protocol) {
           case 'sftp':
