@@ -25,6 +25,11 @@ global.settings = {
   writeSitesConfig: function (sitesData) {
     return fs.writeFileSync(dpath, JSON.stringify(sitesData))
   },
+  updateSite: function (siteId, siteData) {
+    var sites = this.getSitesConfig()
+    sites[siteId] = siteData
+    this.writeSitesConfig(sites)
+  },
   deleteSite: function (siteId) {
     var sites = this.getSitesConfig()
     sites.splice(siteId, 1)

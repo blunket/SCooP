@@ -42,10 +42,25 @@
     },
     computed: {
       selectedSite: function () {
-        if (this.sel == null) {
-          return {}
+        var defaultSite = {
+          siteName: 'New Site',
+          host: '',
+          protocol: 'ftpe',
+          port: 21,
+          username: '',
+          password: ''
         }
-        return this.sites[this.sel]
+        if (this.sel == null) {
+          return defaultSite
+        }
+        var ss = this.sites[this.sel]
+        // fill in the defaults wherever the data might be corrupted for some reason
+        Object.keys(defaultSite).forEach(function (key, i) {
+          if (typeof ss[key] === 'undefined') {
+            ss[key] = defaultSite[key]
+          }
+        })
+        return ss
       }
     },
     methods: {
@@ -61,6 +76,7 @@
           this.loadSites()
           this.sel = this.sites.length - 1
         } else {
+          remote.getGlobal('settings').updateSite(this.sel, siteData)
           this.loadSites()
         }
       },

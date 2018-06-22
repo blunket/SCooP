@@ -103,12 +103,12 @@
         }
       },
       resetForm: function () {
-        this.siteName = 'New Site'
-        this.host = ''
-        this.protocol = 'ftpe'
-        this.port = 21
-        this.username = ''
-        this.password = ''
+        this.siteName = this.selectedSite.siteName
+        this.host = this.selectedSite.host
+        this.protocol = this.selectedSite.protocol
+        this.port = this.selectedSite.port
+        this.username = this.selectedSite.username
+        this.password = this.selectedSite.password
       }
     },
     mounted: function () {
@@ -118,11 +118,9 @@
     watch: {
       sel: function (newVal, oldVal) {
         if (oldVal !== newVal) {
+          this.resetForm()
           if (newVal == null) {
-            this.resetForm()
             document.getElementById('siteName').focus()
-          } else {
-            this.siteName = this.selectedSite.siteName
           }
         }
       }
