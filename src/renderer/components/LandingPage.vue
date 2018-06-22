@@ -5,7 +5,7 @@
     </header>
     <main>
       <div id="sites-list">
-        <sites-list :sites="sites" :sel="sel" @selectSite="selectSite"></sites-list>
+        <sites-list :sites="sites" :sel="sel" @selectSite="selectSite" @deleteSite="deleteSite"></sites-list>
       </div>
       <div id="connection-info">
         <site-info-form :selectedSite="selectedSite" :sel="sel" @saveSite="saveSite" @deleteSite="deleteSite"></site-info-form>
@@ -81,9 +81,16 @@
         }
       },
       deleteSite: function (sel) {
-        remote.getGlobal('settings').deleteSite(sel)
-        this.sel = null
-        this.loadSites()
+        var oldSel = this.sel
+        this.sel = sel
+        var sure = confirm('Really delete site "' + this.selectedSite.siteName + '"?')
+        if (sure) {
+          remote.getGlobal('settings').deleteSite(sel)
+          this.sel = null
+          this.loadSites()
+        } else {
+          this.sel = oldSel
+        }
       }
     },
     components: {
