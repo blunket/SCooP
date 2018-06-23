@@ -37,7 +37,7 @@
     data: function () {
       return {
         sel: null,
-        sites: []
+        sites: {}
       }
     },
     computed: {
@@ -72,9 +72,9 @@
       },
       saveSite: function (siteData) {
         if (this.sel == null) {
-          remote.getGlobal('settings').addSite(siteData)
+          var uuid = remote.getGlobal('settings').addSite(siteData)
           this.loadSites()
-          this.sel = this.sites.length - 1
+          this.sel = uuid
         } else {
           remote.getGlobal('settings').updateSite(this.sel, siteData)
           this.loadSites()
@@ -90,10 +90,6 @@
           if (oldSel === sel) {
             // the selected site was deleted
             this.sel = null
-          } else if (sel < oldSel) {
-            // if site #5 was selected, and site #2 was deleted,
-            // site #5 becomes #4 now so we need to select that one
-            this.sel = oldSel - 1
           } else {
             // re-select the site that was selected
             this.sel = oldSel

@@ -136,7 +136,7 @@
       }
     },
     props: {
-      sel: Number,
+      sel: String,
       selectedSite: Object
     }
   }

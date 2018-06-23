@@ -7,33 +7,41 @@ const fs = require('fs')
 const userDataPath = (app || remote.app).getPath('userData')
 const dpath = path.join(userDataPath, 'site-data.json')
 
+const uuid = require('uuid/v4')
+
 global.settings = {
   getSitesConfig: function () {
     var sites = []
     try {
       sites = JSON.parse(fs.readFileSync(dpath))
     } catch (error) {
-      fs.writeFileSync(dpath, '[]')
+      fs.writeFileSync(dpath, '{}')
     }
     return sites
   },
   addSite: function (siteData) {
     var sites = this.getSitesConfig()
-    sites.push(siteData)
+    var siteId = uuid()
+    siteData['uuid'] = siteId
+    sites[siteId] = siteData
     this.writeSitesConfig(sites)
+    return siteId
   },
   writeSitesConfig: function (sitesData) {
     return fs.writeFileSync(dpath, JSON.stringify(sitesData))
   },
   updateSite: function (siteId, siteData) {
     var sites = this.getSitesConfig()
+    siteData['uuid'] = siteId
     sites[siteId] = siteData
     this.writeSitesConfig(sites)
+    return siteId
   },
   deleteSite: function (siteId) {
     var sites = this.getSitesConfig()
-    sites.splice(siteId, 1)
+    delete sites[siteId]
     this.writeSitesConfig(sites)
+    return siteId
   }
 }
 

@@ -1,10 +1,10 @@
 <template>
-  <ul v-if="sites.length > 0">
+  <ul v-if="hasSites">
     <li
-      v-bind:class="{ 'selected': (i == sel) }"
-      @click="selectSite(i)"
-      @contextmenu="contextMenuHandler(i)"
-      v-for="(site, i) in sites">
+      v-bind:class="{ 'selected': (uuid == sel) }"
+      @click="selectSite(uuid)"
+      @contextmenu="contextMenuHandler(uuid)"
+      v-for="(site, uuid) in sites">
       {{ site.siteName }}
     </li>
   </ul>
@@ -22,6 +22,17 @@
       return {
         rightClicked: null,
         contextMenu: new Menu()
+      }
+    },
+    computed: {
+      hasSites: function () {
+        var v = this
+        for (var p in v.sites) {
+          if (v.sites.hasOwnProperty(p)) {
+            return true
+          }
+        }
+        return false
       }
     },
     methods: {
@@ -58,8 +69,8 @@
       }))
     },
     props: {
-      sites: Array,
-      sel: Number
+      sites: Object,
+      sel: String
     }
   }
 </script>
