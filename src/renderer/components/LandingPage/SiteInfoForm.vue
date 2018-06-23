@@ -1,7 +1,13 @@
 <template>
   <form action="" @submit.prevent="addEditSite()" class="pure-form pure-form-stacked">
-    <input type="hidden" name="siteId" v-model="sel">
-    <input type="text" id="siteName" class="title" v-model="siteName">
+    <span id="editIconSpan" v-show="showEditIcon"
+      @click="focusTitle()">
+      <i class="far fa-edit"></i>
+    </span>
+    <input type="text" id="siteName" class="title"
+      @focus="showEditIcon = false"
+      @blur="showEditIcon = true"
+      v-model="siteName">
     <legend>Session Details</legend>
     <fieldset>
       <div class="pure-g">
@@ -65,7 +71,8 @@
         protocol: 'ftpe',
         port: 21,
         username: '',
-        password: ''
+        password: '',
+        showEditIcon: true
       }
     },
     methods: {
@@ -109,18 +116,21 @@
         this.port = this.selectedSite.port
         this.username = this.selectedSite.username
         this.password = this.selectedSite.password
+      },
+      focusTitle: function () {
+        document.getElementById('siteName').focus()
       }
     },
     mounted: function () {
       this.resetForm()
-      document.getElementById('siteName').focus()
+      this.focusTitle()
     },
     watch: {
       sel: function (newVal, oldVal) {
         if (oldVal !== newVal) {
           this.resetForm()
           if (newVal == null) {
-            document.getElementById('siteName').focus()
+            this.focusTitle()
           }
         }
       }
@@ -146,5 +156,15 @@
 
   .form-btns button {
     margin-right: 5px;
+  }
+
+  #editIconSpan {
+    position: relative;
+    top: 2px;
+    cursor: text;
+  }
+
+  #siteName {
+    display: inline-block;
   }
 </style>
