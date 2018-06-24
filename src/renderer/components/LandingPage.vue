@@ -31,7 +31,7 @@
   import SiteInfoForm from './LandingPage/SiteInfoForm.vue'
   import Vue from 'vue'
 
-  const remote = require('electron').remote
+  import { remote } from 'electron'
 
   export default {
     name: 'landing-page',
