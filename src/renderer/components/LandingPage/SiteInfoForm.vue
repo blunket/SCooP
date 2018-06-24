@@ -115,7 +115,11 @@
         this.protocol = this.selectedSite.protocol
         this.port = this.selectedSite.port
         this.username = this.selectedSite.username
-        this.password = this.selectedSite.password
+        if (this.selectedSite.password === false) {
+          this.password = ''
+        } else {
+          this.password = this.selectedSite.password
+        }
       },
       focusTitle: function () {
         document.getElementById('siteName').focus()
@@ -135,10 +139,10 @@
         }
       }
     },
-    props: {
-      sel: String,
-      selectedSite: Object
-    }
+    props: [
+      'sel',
+      'selectedSite'
+    ]
   }
 </script>
 

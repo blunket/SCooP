@@ -68,10 +68,10 @@
         }
       }))
     },
-    props: {
-      sites: Object,
-      sel: String
-    }
+    props: [
+      'sites',
+      'sel'
+    ]
   }
 </script>
 

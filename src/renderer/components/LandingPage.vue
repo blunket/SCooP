@@ -29,6 +29,7 @@
 <script>
   import SitesList from './LandingPage/SitesList.vue'
   import SiteInfoForm from './LandingPage/SiteInfoForm.vue'
+  import Vue from 'vue'
 
   const remote = require('electron').remote
 
@@ -68,34 +69,36 @@
         this.sel = ind
       },
       loadSites: function () {
-        this.sites = remote.getGlobal('settings').getSitesConfig()
+        var v = this
+        return new Promise(async function (resolve, reject) {
+          v.sites = await remote.getGlobal('settings').getSitesConfig()
+          resolve()
+        })
       },
-      saveSite: function (siteData) {
-        if (this.sel == null) {
-          var uuid = remote.getGlobal('settings').addSite(siteData)
-          this.loadSites()
-          this.sel = uuid
+      saveSite: async function (siteData) {
+        var v = this
+        if (v.sel == null) {
+          var uuid = remote.getGlobal('settings').addSite(v.sites, siteData)
+          v.loadSites().then(function () {
+            v.sel = uuid
+          })
         } else {
-          remote.getGlobal('settings').updateSite(this.sel, siteData)
-          this.loadSites()
+          remote.getGlobal('settings').updateSite(v.sites, v.sel, siteData)
+          v.loadSites()
         }
       },
       deleteSite: function (sel) {
-        var oldSel = this.sel
-        this.sel = sel
-        var sure = confirm('Really delete site "' + this.selectedSite.siteName + '"?')
+        var v = this
+        var sure = confirm('Really delete site "' + v.sites[sel].siteName + '"?')
         if (sure) {
-          remote.getGlobal('settings').deleteSite(sel)
-          this.loadSites()
-          if (oldSel === sel) {
-            // the selected site was deleted
-            this.sel = null
-          } else {
-            // re-select the site that was selected
-            this.sel = oldSel
+          if (v.sel === sel) {
+            v.sel = null
           }
-        } else {
-          this.sel = oldSel
+          Vue.nextTick(function () {
+            remote.getGlobal('settings').deleteSite(v.sites, sel).then(function () {
+              v.loadSites()
+            })
+          })
         }
       }
     },
