@@ -1,15 +1,15 @@
 'use strict'
 
 import { app, remote, BrowserWindow } from 'electron'
-const path = require('path')
-const fs = require('fs')
 
+import uuid from 'uuid/v4'
+import path from 'path'
+import keytar from 'keytar'
+import fs from 'fs'
+
+const keytarServiceName = 'SCooP-SCP'
 const userDataPath = (app || remote.app).getPath('userData')
 const dpath = path.join(userDataPath, 'site-data.json')
-
-const uuid = require('uuid/v4')
-const keytar = require('keytar')
-const keytarServiceName = 'SCooP-SCP'
 
 global.settings = {
   getSitesConfig: async function () {
@@ -77,7 +77,7 @@ global.settings = {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
 let mainWindow

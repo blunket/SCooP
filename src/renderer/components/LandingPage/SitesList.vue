@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  const remote = require('electron').remote
+  import { remote } from 'electron'
 
   const Menu = remote.Menu
   const MenuItem = remote.MenuItem
