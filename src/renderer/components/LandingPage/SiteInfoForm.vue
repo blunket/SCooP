@@ -1,15 +1,17 @@
 <template>
-  <form action="" @submit.prevent="addEditSite()" class="pure-form pure-form-stacked">
-    <span id="editIconSpan" v-show="showEditIcon"
-      @click="focusTitle()">
-      <i class="far fa-edit"></i>
-    </span>
-    <input type="text" id="siteName" class="title"
-      maxlength="30"
-      v-bind:class="{ 'invalid': !validations.siteName }"
-      @focus="showEditIcon = false"
-      @blur="showEditIcon = true"
-      v-model.trim="siteName">
+  <form action="" @submit.prevent="addEditSite()" id="site-info-form" class="pure-form pure-form-stacked">
+    <div id="siteNameBlock">
+      <span id="editIconSpan" v-show="showEditIcon"
+        @click="focusTitle()">
+        <i class="far fa-edit"></i>
+      </span>
+      <input type="text" id="siteName" class="title"
+        maxlength="30"
+        v-bind:class="{ 'invalid': !validations.siteName }"
+        @focus="showEditIcon = false"
+        @blur="showEditIcon = true"
+        v-model.trim="siteName">
+    </div>
     <legend>Session Details</legend>
     <fieldset>
       <div class="pure-g">
@@ -186,6 +188,16 @@
     position: relative;
     top: 2px;
     cursor: text;
+  }
+
+  #site-info-form {
+    padding-top: 30px;
+    position: relative;
+  }
+
+  #siteNameBlock {
+    top: 0px;
+    position: absolute;
   }
 
   #siteName {
